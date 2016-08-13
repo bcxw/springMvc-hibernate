@@ -2,6 +2,8 @@ package action;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,5 +36,16 @@ public class MenuAction {
 	@RequestMapping("/saveMenu.action")
 	public ResponseResult saveMenu(@RequestParam Map<String,String> paramMap){
 		return menuService.saveMenu(paramMap);
+	}
+	
+	/**
+	 * 获取菜单所有小图标，作为下拉选项
+	 * @param paramMap
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/getIcons.action")
+	public ResponseResult getIcons(HttpServletRequest request,@RequestParam Map<String,String> paramMap){
+		return menuService.getIcons(request,paramMap);
 	}
 }

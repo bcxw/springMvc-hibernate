@@ -54,7 +54,7 @@ Ext.define('app.menu.MenuTreeGrid',{
 	},{
 		text:'图标',
 		width:200,
-		dataIndex: 'iconCls',
+		dataIndex: 'icon',
 		sortable: false,
 		editor: {
 			xtype:"iconCombobox"	

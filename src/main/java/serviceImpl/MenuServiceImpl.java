@@ -1,7 +1,12 @@
 package serviceImpl;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,6 +106,32 @@ public class MenuServiceImpl implements MenuService {
 			responseResult=ResponseResult.failure("Menu does not exist");
 		}
 		return responseResult;
+	}
+
+	@Override
+	public ResponseResult getIcons(HttpServletRequest request,Map<String, String> paramMap) {
+		// TODO Auto-generated method stub
+		
+		String rootPath=request.getServletContext().getRealPath("/");
+		
+		String imagePath="images/icon/";
+		
+		File file = new File(rootPath+imagePath);
+		
+		File [] files = file.listFiles();
+		
+		List<Map<String,String>> list=new ArrayList<Map<String,String>>();
+		for(File imgeFile:files){
+			Map<String,String> map=new HashMap<String,String>();
+			
+			String fileName=imgeFile.getName();
+			map.put("url",imagePath+fileName);
+			map.put("name",fileName);
+			list.add(map);
+		 
+        }
+		
+		return ResponseResult.success(list);
 	}
 		
 }

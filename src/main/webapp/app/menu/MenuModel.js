@@ -7,8 +7,7 @@ Ext.define('app.menu.MenuModel',{
 			root:{
 				id:0,
 				text:lang("root menu"),
-				name:lang("root menu"),
-				expanded:true
+				name:lang("root menu")
 			},
 			sorters:'sort',
 			defaultRootProperty:"data",
@@ -23,7 +22,7 @@ Ext.define('app.menu.MenuModel',{
 			},{
 				name:'uri'
 			},{
-				name:'iconCls'
+				name:'icon'
 			},{
 				name:'sort'
 			}],
