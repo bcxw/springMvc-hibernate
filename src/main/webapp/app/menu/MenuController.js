@@ -17,8 +17,8 @@ Ext.define('app.menu.MenuController', {
 			});
 		}else{
 			Ext.MessageBox.show({
-				title:'系统提示',
-				msg: '请您先完成当前的编辑！',
+				title:lang('System prompt'),
+				msg: lang('Please complete the current edit!'),
 				buttons: Ext.MessageBox.OK,
 				icon: Ext.MessageBox.WARNING
 			});
@@ -98,7 +98,7 @@ Ext.define('app.menu.MenuController', {
 		//检查parentId不能是自己
 		if(context.record.data.id==context.record.data.parentId){
 			Ext.MessageBox.show({
-				title:'系统提示',
+				title:lang('System prompt'),
 				msg:lang("Parent menu can not set their own"),
 				buttons: Ext.MessageBox.OK,
 				icon: Ext.MessageBox.WARNING
@@ -147,7 +147,7 @@ Ext.define('app.menu.MenuController', {
 					Ext.toast({html:result.message,align:'b',stickOnClick:false});
 				}else{
 					Ext.MessageBox.show({
-						title:'系统提示',
+						title:lang('System prompt'),
 						msg:result.message,
 						buttons: Ext.MessageBox.OK,
 						icon: Ext.MessageBox.WARNING
@@ -158,7 +158,7 @@ Ext.define('app.menu.MenuController', {
 			},
 			failure:function(response){
 				Ext.MessageBox.show({
-					title:'系统提示',
+					title:lang('System prompt'),
 					msg:response.responseText,
 					buttons: Ext.MessageBox.OK,
 					icon: Ext.MessageBox.ERROR
@@ -174,8 +174,8 @@ Ext.define('app.menu.MenuController', {
 	beforeedit:function( editor, context, eOpts ){
 		if(editor.editing){
 			Ext.MessageBox.show({
-				title:'系统提示',
-				msg: '请您先完成当前的编辑！',
+				title:lang('System prompt'),
+				msg:lang('Please complete the current edit!'),
 				buttons: Ext.MessageBox.OK,
 				icon: Ext.MessageBox.WARNING
 			});

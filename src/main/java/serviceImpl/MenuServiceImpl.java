@@ -39,41 +39,57 @@ public class MenuServiceImpl implements MenuService {
 		String idStr=paramMap.get("id");
 		int id=StringUtils.isNumeric(idStr)?Integer.parseInt(idStr):-1;
 		
-		//同一父菜单，名称不能相同
+		/**1.同一父菜单，名称不能相同**/
 		Menu checkMenu=new Menu();
 		checkMenu.setText(paramMap.get("text"));
 		checkMenu.setParentId(Integer.parseInt(paramMap.get("parentId")));
 		
 		List<Menu> checkMenuList=menuDAOImpl.findByExample(checkMenu);
 		
-		if(checkMenuList==null||checkMenuList.isEmpty()||checkMenuList.get(0).getId()==id){
-			
-			//保存菜单数据
-			Menu menu=id>0?menuDAOImpl.findById(id):new Menu();
-			
-			menu.setText(paramMap.get("text"));
-			menu.setParentId(Integer.parseInt(paramMap.get("parentId")));
-			menu.setParentName(paramMap.get("parentName"));
-			menu.setUri(paramMap.get("uri"));
-			menu.setIcon(paramMap.get("icon"));
-			if(StringUtils.isNotEmpty(paramMap.get("sort"))&&StringUtils.isNumeric(paramMap.get("sort")))menu.setSort(Integer.parseInt(paramMap.get("sort")));
-			menu.setLeaf(paramMap.get("leaf"));
-			
-			menuDAOImpl.save(menu);
-			
-			//保存父菜单数据,主要是设置为不是末端节点。
-			Menu parentMenu=menuDAOImpl.findById(menu.getParentId());
-			if(parentMenu!=null&&"true".equals(parentMenu.getLeaf())){
-				parentMenu.setLeaf("false");
-				menuDAOImpl.save(parentMenu);
-			}
-			
-			responseResult=ResponseResult.success("Save menu success!",menu);
-		}else{
-			responseResult=ResponseResult.failure("The same parent menu has a menu name, please re - enter the name of the menu!");
+		if(checkMenuList!=null&&!checkMenuList.isEmpty()&&checkMenuList.get(0).getId()!=id){
+			return ResponseResult.failure("The same parent menu has a menu name, please re - enter the name of the menu!");
 		}
-	
-		return responseResult;
+		
+		/**2.修改时检查不能将菜单的父菜单设置成自己或自己的子菜单**/
+		if(id>0){
+			List<Integer> parentsIdList=new ArrayList<Integer>();
+			Menu oneParentMenu=menuDAOImpl.findById(Integer.parseInt(paramMap.get("parentId")));
+			while(oneParentMenu!=null){
+				parentsIdList.add(oneParentMenu.getId());
+				oneParentMenu=menuDAOImpl.findById(oneParentMenu.getParentId());
+			}
+			if(parentsIdList.contains(id)){
+				return ResponseResult.failure("You can't set the parent menu to yourself or the sub menu.");
+			}
+		}
+		
+		/**3.保存菜单数据**/
+		Menu menu=id>0?menuDAOImpl.findById(id):new Menu();
+		
+		menu.setText(paramMap.get("text"));
+		menu.setParentId(Integer.parseInt(paramMap.get("parentId")));
+		menu.setParentName(paramMap.get("parentName"));
+		menu.setUri(paramMap.get("uri"));
+		menu.setIcon(paramMap.get("icon"));
+		if(StringUtils.isNotEmpty(paramMap.get("sort"))&&StringUtils.isNumeric(paramMap.get("sort")))menu.setSort(Integer.parseInt(paramMap.get("sort")));
+		//如果存在子菜单则不是leaf
+		String leaf="";
+		if(id>0){
+			List<Menu> childMenuList=menuDAOImpl.findByParentId(id);
+			leaf=childMenuList!=null&&!childMenuList.isEmpty()?"false":"true";
+		}
+		menu.setLeaf(leaf);
+		
+		menuDAOImpl.save(menu);
+		
+		/**4.保存父菜单数据,主要是设置为不是末端节点。**/
+		Menu parentMenu=menuDAOImpl.findById(menu.getParentId());
+		if(parentMenu!=null&&"true".equals(parentMenu.getLeaf())){
+			parentMenu.setLeaf("false");
+			menuDAOImpl.save(parentMenu);
+		}
+		
+		return ResponseResult.success("Save menu success!",menu);
 	}
 
 	@Override
