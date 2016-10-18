@@ -20,7 +20,7 @@ Ext.define('app.common.IconCombobox', {
 		picker = new Ext.panel.Panel({
 			floating: true,
 			shadow: false,
-			height:250,
+			maxHeight:300,
 			scrollable:"y",
 			items:[{
 				xtype:"dataview",

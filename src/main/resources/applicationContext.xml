@@ -40,7 +40,7 @@
 		</property>
 		<property name="packagesToScan" value="dao"></property>
 	</bean>
-	<bean id="hibernateSessionFactory" class="dao.HibernateSessionFactory">
+	<bean id="entityRepository" class="dao.repository.EntityRepository">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
@@ -51,6 +51,6 @@
 	</bean>
 	<tx:annotation-driven transaction-manager="transactionManager" />
 	
-	<context:component-scan base-package="serviceImpl,daoImpl"></context:component-scan>
+	<context:component-scan base-package="serviceImpl,dao,dao.repository"></context:component-scan>
 
 </beans>

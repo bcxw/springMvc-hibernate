@@ -7,6 +7,7 @@ Ext.define('app.menu.MenuTreeGrid',{
 	controller:'menuController',
 	bind:{store:'{menuTreeGridStore}'},
 	
+	name:"menuTreeGrid",
 	closable:true,
 	rootVisible:false,
 	columnLines:true,

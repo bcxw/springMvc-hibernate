@@ -2,75 +2,48 @@ package dao;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import org.hibernate.annotations.GenericGenerator;
 
-/**
- * Menu entity. @author MyEclipse Persistence Tools
- */
+import org.springframework.stereotype.Repository;
+
+import dao.repository.EntityRepository;
+
 @Entity
-@Table(name = "menu", catalog = "source")
-public class Menu implements java.io.Serializable {
+@Repository
+@Table(name = "menu")
+public class Menu extends EntityRepository implements java.io.Serializable {
 
-	// Fields
+	private static final long serialVersionUID = -1469887602916830462L;
 
-	private Integer id;
-	private Integer parentId;
+	@Column(name = "parentId")
+	private String parentId;
+
+	@Column(name = "parentName")
 	private String parentName;
+
+	@Column(name = "text")
 	private String text;
+
+	@Column(name = "uri")
 	private String uri;
+
+	@Column(name = "icon")
 	private String icon;
+
+	@Column(name = "leaf")
 	private String leaf;
+
+	@Column(name = "sort")
 	private Integer sort;
 
-	// Constructors
-
-	/** default constructor */
-	public Menu() {
-	}
-
-	/** minimal constructor */
-	public Menu(Integer parentId) {
-		this.parentId = parentId;
-	}
-
-	/** full constructor */
-	public Menu(Integer parentId, String parentName, String text, String uri,
-			String icon, String leaf, Integer sort) {
-		this.parentId = parentId;
-		this.parentName = parentName;
-		this.text = text;
-		this.uri = uri;
-		this.icon = icon;
-		this.leaf = leaf;
-		this.sort = sort;
-	}
-
-	// Property accessors
-	@GenericGenerator(name = "generator", strategy = "increment")
-	@Id
-	@GeneratedValue(generator = "generator")
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	@Column(name = "parentId", nullable = false)
-	public Integer getParentId() {
+	public String getParentId() {
 		return this.parentId;
 	}
 
-	public void setParentId(Integer parentId) {
+	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
 
-	@Column(name = "parentName", length = 50)
 	public String getParentName() {
 		return this.parentName;
 	}
@@ -79,7 +52,6 @@ public class Menu implements java.io.Serializable {
 		this.parentName = parentName;
 	}
 
-	@Column(name = "text", length = 50)
 	public String getText() {
 		return this.text;
 	}
@@ -88,7 +60,6 @@ public class Menu implements java.io.Serializable {
 		this.text = text;
 	}
 
-	@Column(name = "uri", length = 200)
 	public String getUri() {
 		return this.uri;
 	}
@@ -97,7 +68,6 @@ public class Menu implements java.io.Serializable {
 		this.uri = uri;
 	}
 
-	@Column(name = "icon", length = 50)
 	public String getIcon() {
 		return this.icon;
 	}
@@ -106,7 +76,6 @@ public class Menu implements java.io.Serializable {
 		this.icon = icon;
 	}
 
-	@Column(name = "leaf", length = 10)
 	public String getLeaf() {
 		return this.leaf;
 	}
@@ -115,7 +84,6 @@ public class Menu implements java.io.Serializable {
 		this.leaf = leaf;
 	}
 
-	@Column(name = "sort")
 	public Integer getSort() {
 		return this.sort;
 	}

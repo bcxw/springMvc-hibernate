@@ -1,55 +1,54 @@
 package common;
 
-public class ResponseResult{
+public class ResponseResult {
+
 	private boolean success;
 	private Object data;
 	private String message;
 	private int total;
 	private String status;
-	
 
-	public static ResponseResult success(String message){
-		ResponseResult result=new ResponseResult();
+	public static ResponseResult success(String message) {
+		ResponseResult result = new ResponseResult();
 		result.setSuccess(true);
 		result.setMessage(message);
 		return result;
 	}
-	
-	public static ResponseResult success(Object data){
-		ResponseResult result=new ResponseResult();
+
+	public static ResponseResult success(Object data) {
+		ResponseResult result = new ResponseResult();
 		result.setSuccess(true);
 		result.setData(data);
 		return result;
 	}
 
-	
-	public static ResponseResult success(Object data,int total){
-		ResponseResult result=new ResponseResult();
+	public static ResponseResult success(Object data, int total) {
+		ResponseResult result = new ResponseResult();
 		result.setSuccess(true);
 		result.setData(data);
 		result.setTotal(total);
 		return result;
 	}
-	
-	public static ResponseResult success(String message,Object data){
-		ResponseResult result=new ResponseResult();
+
+	public static ResponseResult success(String message, Object data) {
+		ResponseResult result = new ResponseResult();
 		result.setSuccess(true);
 		result.setMessage(message);
 		result.setData(data);
 		return result;
 	}
-	
-	public static ResponseResult success(String message,Object data,int total){
-		ResponseResult result=new ResponseResult();
+
+	public static ResponseResult success(String message, Object data, int total) {
+		ResponseResult result = new ResponseResult();
 		result.setSuccess(true);
 		result.setMessage(message);
 		result.setData(data);
 		result.setTotal(total);
 		return result;
 	}
-	
-	public static ResponseResult failure(String message){
-		ResponseResult result=new ResponseResult();
+
+	public static ResponseResult failure(String message) {
+		ResponseResult result = new ResponseResult();
 		result.setSuccess(false);
 		result.setMessage(message);
 		return result;
@@ -94,5 +93,5 @@ public class ResponseResult{
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
 }

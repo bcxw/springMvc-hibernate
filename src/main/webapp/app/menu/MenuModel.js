@@ -3,14 +3,15 @@ Ext.define('app.menu.MenuModel',{
 	alias:'viewmodel.menuModel',
 	stores:{
 		menuTreeGridStore:{
+			autoLoad:true,
 			type:"tree",
+			sorters:'sort',
+			defaultRootProperty:"data",//按照data属性读取节点，默认是children
 			root:{
 				id:0,
 				text:lang("root menu"),
 				name:lang("root menu")
 			},
-			sorters:'sort',
-			defaultRootProperty:"data",
 			fields: [{
 				name:'id'
 			},{
@@ -28,7 +29,7 @@ Ext.define('app.menu.MenuModel',{
 			}],
 			proxy: {
 				type:'ajax',
-				url:'menuAction/getChildrenMenu.action'
+				url:'menuAction/getMenuTree.action'
 			}
 		}
 	}

@@ -21,9 +21,9 @@ public class MenuAction {
 	private MenuService menuService;
 	
 	@ResponseBody
-	@RequestMapping("/getChildrenMenu.action")
-	public ResponseResult login(@RequestParam Map<String,String> paramMap){
-		return menuService.getChildrenMenu(paramMap);
+	@RequestMapping("/getMenuTree.action")
+	public ResponseResult getMenuTree(@RequestParam Map<String,String> paramMap){
+		return menuService.getMenuTree(paramMap);
 	}
 	
 	@ResponseBody

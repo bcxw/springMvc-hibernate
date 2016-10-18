@@ -54,7 +54,7 @@ Ext.define('app.view.Viewport', {
         split:true,
 		rootVisible:false,
 		useArrows:true,
-		bind:{store:'{menuTreeGridStore}'},
+		bind:{store:'{menuTreeGridStore}'},//以后要修改程自己的store，要有权限的
 		listeners:{
 			itemexpand:function( node, eOpts ){
 				if(node.id==0&&node.firstChild)node.firstChild.expand();

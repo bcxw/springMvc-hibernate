@@ -7,26 +7,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import service.ConfigService;
+
 import common.ResponseResult;
+
 import dao.Config;
-import daoImpl.ConfigDAOImpl;
 
 @Service
-public class ConfigServiceImpl implements ConfigService{
-	
+public class ConfigServiceImpl implements ConfigService {
+
 	@Autowired
-	private ConfigDAOImpl configDAOImpl;
-	
+	private Config config;
+
 	public ResponseResult getConfig() {
-		// TODO Auto-generated method stub
-		Config config=(Config) configDAOImpl.findById(0);
-		Map<String,String> map=new HashMap<String,String>();
+		config = config.findById(Config.class, "a");
+		Map<String, String> map = new HashMap<String, String>();
 		map.put("systemName", config.getSystemName());
 		return ResponseResult.success(map);
 	}
-	
-	
-	
-	
-	
+
 }

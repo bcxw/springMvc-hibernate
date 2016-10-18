@@ -2,48 +2,22 @@ package dao;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import org.hibernate.annotations.GenericGenerator;
 
-/**
- * Config entity. @author MyEclipse Persistence Tools
- */
+import org.springframework.stereotype.Repository;
+
+import dao.repository.EntityRepository;
+
 @Entity
-@Table(name = "config", catalog = "source")
-public class Config implements java.io.Serializable {
+@Repository
+@Table(name = "config")
+public class Config extends EntityRepository implements java.io.Serializable {
 
-	// Fields
-
-	private Integer id;
-	private String systemName;
-
-	// Constructors
-
-	/** default constructor */
-	public Config() {
-	}
-
-	/** full constructor */
-	public Config(String systemName) {
-		this.systemName = systemName;
-	}
-
-	// Property accessors
-	@GenericGenerator(name = "generator", strategy = "increment")
-	@Id
-	@GeneratedValue(generator = "generator")
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	private static final long serialVersionUID = 6434736325502162891L;
 
 	@Column(name = "systemName", length = 100)
+	private String systemName;
+
 	public String getSystemName() {
 		return this.systemName;
 	}

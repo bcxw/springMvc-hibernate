@@ -14,140 +14,156 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import service.MenuService;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import common.ResponseResult;
+
 import dao.Menu;
-import daoImpl.MenuDAOImpl;
 
 @Service
 public class MenuServiceImpl implements MenuService {
-	
-	@Autowired
-	private MenuDAOImpl menuDAOImpl;
 
-	public ResponseResult getChildrenMenu(Map<String,String> paramMap) {
-		// TODO Auto-generated method stub
-		int parentId=Integer.parseInt(paramMap.get("node"));
-		List<Menu> menuList=menuDAOImpl.findByParentId(parentId);
-		return ResponseResult.success(menuList);
+	@Autowired
+	private Menu menu;
+
+	@Override
+	public ResponseResult getMenuTree(Map<String, String> paramMap) {
+		return ResponseResult.success(getMenuTree("a"));
 	}
-	
+
+	public List<Map<String, Object>> getMenuTree(String parentId) {
+		List<Menu> menuList = menu.findByProperty(Menu.class, "parentId",
+				parentId);
+		List<Map<String, Object>> returnList = new ObjectMapper().convertValue(
+				menuList, new TypeReference<List<Map<String, Object>>>() {
+				});
+		for (int i = 0; i < menuList.size(); i++) {
+			Menu oneMenu = menuList.get(i);
+			List<Map<String, Object>> childMenuList = getMenuTree(oneMenu
+					.getId());
+			returnList.get(i).put("data", childMenuList);
+		}
+		return returnList;
+	}
+
 	@Override
 	@Transactional
 	public ResponseResult saveMenu(Map<String, String> paramMap) {
-		// TODO Auto-generated method stub
-		ResponseResult responseResult=null;
-		String idStr=paramMap.get("id");
-		int id=StringUtils.isNumeric(idStr)?Integer.parseInt(idStr):-1;
-		
-		/**1.同一父菜单，名称不能相同**/
-		Menu checkMenu=new Menu();
-		checkMenu.setText(paramMap.get("text"));
-		checkMenu.setParentId(Integer.parseInt(paramMap.get("parentId")));
-		
-		List<Menu> checkMenuList=menuDAOImpl.findByExample(checkMenu);
-		
-		if(checkMenuList!=null&&!checkMenuList.isEmpty()&&checkMenuList.get(0).getId()!=id){
-			return ResponseResult.failure("The same parent menu has a menu name, please re - enter the name of the menu!");
+
+		/** 1.同一父菜单，名称不能相同 **/
+		Map<String, Object> checkConditions = new HashMap<String, Object>();
+		checkConditions.put("text", paramMap.get("text"));
+		checkConditions.put("parentId", paramMap.get("parentId"));
+		List<Menu> checkMenuList = menu.findByProperties(Menu.class,
+				checkConditions);
+
+		if (checkMenuList != null && !checkMenuList.isEmpty()
+				&& !checkMenuList.get(0).getId().equals(paramMap.get("id"))) {
+			return ResponseResult
+					.failure("The same parent menu has a menu name, please re - enter the name of the menu!");
 		}
-		
-		/**2.修改时检查不能将菜单的父菜单设置成自己或自己的子菜单**/
-		if(id>0){
-			List<Integer> parentsIdList=new ArrayList<Integer>();
-			Menu oneParentMenu=menuDAOImpl.findById(Integer.parseInt(paramMap.get("parentId")));
-			while(oneParentMenu!=null){
+
+		/** 2.修改时检查不能将菜单的父菜单设置成自己或自己的子菜单 **/
+		if (StringUtils.isNotEmpty(paramMap.get("id"))) {
+			List<String> parentsIdList = new ArrayList<String>();
+			Menu oneParentMenu = menu.findById(Menu.class,
+					paramMap.get("parentId"));
+			while (oneParentMenu != null) {
 				parentsIdList.add(oneParentMenu.getId());
-				oneParentMenu=menuDAOImpl.findById(oneParentMenu.getParentId());
+				oneParentMenu = menu.findById(Menu.class,
+						oneParentMenu.getParentId());
 			}
-			if(parentsIdList.contains(id)){
-				return ResponseResult.failure("You can't set the parent menu to yourself or the sub menu.");
+			if (parentsIdList.contains(paramMap.get("id"))) {
+				return ResponseResult
+						.failure("You can't set the parent menu to yourself or the sub menu.");
 			}
 		}
-		
-		/**3.保存菜单数据**/
-		Menu menu=id>0?menuDAOImpl.findById(id):new Menu();
-		
+
+		/** 3.保存菜单数据 **/
+		menu = StringUtils.isNotEmpty(paramMap.get("id")) ? menu.findById(
+				Menu.class, paramMap.get("id")) : new Menu();
+
 		menu.setText(paramMap.get("text"));
-		menu.setParentId(Integer.parseInt(paramMap.get("parentId")));
+		menu.setParentId(paramMap.get("parentId"));
 		menu.setParentName(paramMap.get("parentName"));
 		menu.setUri(paramMap.get("uri"));
 		menu.setIcon(paramMap.get("icon"));
-		if(StringUtils.isNotEmpty(paramMap.get("sort"))&&StringUtils.isNumeric(paramMap.get("sort")))menu.setSort(Integer.parseInt(paramMap.get("sort")));
-		//如果存在子菜单则不是leaf
-		String leaf="";
-		if(id>0){
-			List<Menu> childMenuList=menuDAOImpl.findByParentId(id);
-			leaf=childMenuList!=null&&!childMenuList.isEmpty()?"false":"true";
+		if (StringUtils.isNotEmpty(paramMap.get("sort"))
+				&& StringUtils.isNumeric(paramMap.get("sort")))
+			menu.setSort(Integer.parseInt(paramMap.get("sort")));
+		// 如果存在子菜单则不是leaf
+		String leaf = "";
+		if (StringUtils.isNotEmpty(paramMap.get("id"))) {
+			List<Menu> childMenuList = menu.findByProperty(Menu.class,
+					"parentId", paramMap.get("id"));
+			leaf = childMenuList != null && !childMenuList.isEmpty() ? "false"
+					: "true";
 		}
 		menu.setLeaf(leaf);
-		
-		menuDAOImpl.save(menu);
-		
-		/**4.保存父菜单数据,主要是设置为不是末端节点。**/
-		Menu parentMenu=menuDAOImpl.findById(menu.getParentId());
-		if(parentMenu!=null&&"true".equals(parentMenu.getLeaf())){
+
+		menu.save(menu);
+
+		/** 4.保存父菜单数据,主要是设置为不是末端节点。 **/
+		Menu parentMenu = menu.findById(Menu.class, menu.getParentId());
+		if (parentMenu != null && "true".equals(parentMenu.getLeaf())) {
 			parentMenu.setLeaf("false");
-			menuDAOImpl.save(parentMenu);
+			menu.save(parentMenu);
 		}
-		
-		return ResponseResult.success("Save menu success!",menu);
+
+		return ResponseResult.success("Save menu success!", menu);
 	}
 
 	@Override
 	@Transactional
 	public ResponseResult deleteMenu(Map<String, String> paramMap) {
-		// TODO Auto-generated method stub
-		ResponseResult responseResult=null;
-		
-		int id=Integer.parseInt(paramMap.get("id"));
-		Menu menu=menuDAOImpl.findById(id);
-		if(menu!=null){
-			List<Menu> list=menuDAOImpl.findByParentId(id);
-			if(list.size()>0){
-				responseResult=ResponseResult.failure("This menu contains the sub menu, can not be deleted");
-			}else{
-				//如果父菜单没有子菜单了，设置为是末端节点
-				Menu parentMenu=menuDAOImpl.findById(menu.getParentId());
-				List childMenuList=menuDAOImpl.findByParentId(parentMenu.getId());
-				if(childMenuList.size()<=1){
+		ResponseResult responseResult = null;
+
+		String id = paramMap.get("id");
+		menu = menu.findById(Menu.class, id);
+		if (menu != null) {
+			List<Menu> list = menu.findByProperty(Menu.class, "parentId", id);
+			if (list.size() > 0) {
+				responseResult = ResponseResult
+						.failure("This menu contains the sub menu, can not be deleted");
+			} else {
+				// 如果父菜单没有子菜单了，设置为是末端节点
+				Menu parentMenu = menu.findById(Menu.class, menu.getParentId());
+				List<Menu> childMenuList = menu.findByProperty(Menu.class,
+						"parentId", parentMenu.getId());
+				if (childMenuList.size() <= 1) {
 					parentMenu.setLeaf("true");
 				}
-				menuDAOImpl.save(parentMenu);
-				
-				//删除菜单
-				menuDAOImpl.delete(menu);
-				
-				responseResult=ResponseResult.success("Delete menu success");
+				menu.save(parentMenu);
+
+				// 删除菜单
+				menu.remove(menu);
+
+				responseResult = ResponseResult.success("Delete menu success");
 			}
-		}else{
-			responseResult=ResponseResult.failure("Menu does not exist");
+		} else {
+			responseResult = ResponseResult.failure("Menu does not exist");
 		}
 		return responseResult;
 	}
 
 	@Override
-	public ResponseResult getIcons(HttpServletRequest request,Map<String, String> paramMap) {
-		// TODO Auto-generated method stub
-		
-		String rootPath=request.getServletContext().getRealPath("/");
-		
-		String imagePath="images/icon/";
-		
-		File file = new File(rootPath+imagePath);
-		
-		File [] files = file.listFiles();
-		
-		List<Map<String,String>> list=new ArrayList<Map<String,String>>();
-		for(File imgeFile:files){
-			Map<String,String> map=new HashMap<String,String>();
-			
-			String fileName=imgeFile.getName();
-			map.put("url",imagePath+fileName);
-			map.put("name",fileName);
+	public ResponseResult getIcons(HttpServletRequest request,
+			Map<String, String> paramMap) {
+		String rootPath = request.getServletContext().getRealPath("/");
+		String imagePath = "images/icon/";
+		File file = new File(rootPath + imagePath);
+		File[] files = file.listFiles();
+		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+		for (File imgeFile : files) {
+			Map<String, String> map = new HashMap<String, String>();
+			String fileName = imgeFile.getName();
+			map.put("url", imagePath + fileName);
+			map.put("name", fileName);
 			list.add(map);
-		 
-        }
-		
+
+		}
 		return ResponseResult.success(list);
 	}
-		
+
 }

@@ -2,55 +2,31 @@ package dao;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import org.hibernate.annotations.GenericGenerator;
 
-/**
- * User entity. @author MyEclipse Persistence Tools
- */
+import org.springframework.stereotype.Repository;
+
+import dao.repository.EntityRepository;
+
 @Entity
-@Table(name = "user", catalog = "source")
-public class User implements java.io.Serializable {
+@Repository
+@Table(name = "user")
+public class User extends EntityRepository implements java.io.Serializable {
 
-	// Fields
+	private static final long serialVersionUID = 999607175131148821L;
 
-	private Integer id;
+	@Column(name = "userName")
 	private String userName;
+
+	@Column(name = "password")
 	private String password;
+
+	@Column(name = "lastTime")
 	private String lastTime;
+
+	@Column(name = "errorTimes")
 	private Integer errorTimes;
 
-	// Constructors
-
-	/** default constructor */
-	public User() {
-	}
-
-	/** full constructor */
-	public User(String userName, String password, String lastTime,
-			Integer errorTimes) {
-		this.userName = userName;
-		this.password = password;
-		this.lastTime = lastTime;
-		this.errorTimes = errorTimes;
-	}
-
-	// Property accessors
-	@GenericGenerator(name = "generator", strategy = "increment")
-	@Id
-	@GeneratedValue(generator = "generator")
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	@Column(name = "userName", length = 50)
 	public String getUserName() {
 		return this.userName;
 	}
@@ -59,7 +35,6 @@ public class User implements java.io.Serializable {
 		this.userName = userName;
 	}
 
-	@Column(name = "password", length = 100)
 	public String getPassword() {
 		return this.password;
 	}
@@ -68,7 +43,6 @@ public class User implements java.io.Serializable {
 		this.password = password;
 	}
 
-	@Column(name = "lastTime", length = 20)
 	public String getLastTime() {
 		return this.lastTime;
 	}
@@ -77,7 +51,6 @@ public class User implements java.io.Serializable {
 		this.lastTime = lastTime;
 	}
 
-	@Column(name = "errorTimes")
 	public Integer getErrorTimes() {
 		return this.errorTimes;
 	}
