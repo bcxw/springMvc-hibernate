@@ -4,12 +4,22 @@ Ext.define('app.view.ViewController', {
 	logoff:function(){
 		Ext.MessageBox.confirm('系统提示', '您确定要注销登录吗？',function(btn){
 			if(btn=="yes"){
-				Ext.Ajax.request({
-					url:'loginAction/logoff.action'
-				});
-				window.location.href="login.jsp";
+				var csrf=document.getElementsByName("csrf").item(0);
+				var parameterName=csrf.attributes['parameterName'].value;
+				var token=csrf.attributes['token'].value;
+				Ext.create({
+					xtype:"form",
+					standardSubmit:true,
+					url:"logout",
+					items:[{
+						xtype:"hidden",
+						name:parameterName,
+						value:token
+					}]
+				}).submit();
 			}
 
 		});
 	}
+	
 });

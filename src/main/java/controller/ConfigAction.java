@@ -1,6 +1,7 @@
-package action;
+package controller;
 
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -10,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import service.ConfigService;
-
-import common.ResponseResult;
 
 @Controller
 @RequestMapping("/configAction")
@@ -23,13 +22,13 @@ public class ConfigAction {
 	@ResponseBody
 	@RequestMapping("/getConfig.action")
 	@SuppressWarnings("unchecked")
-	public ResponseResult getConfig(HttpSession httpSession) {
-		ResponseResult result = configService.getConfig();
+	public Map<String, Object> getConfig(HttpSession httpSession) {
+		Map<String, Object> result = configService.getConfig();
 		String userName = (String) httpSession.getAttribute("userName");
 		if (userName != null && !userName.isEmpty()) {
-			Map<String, String> map = (Map<String, String>) result.getData();
+			Map<String, String> map = (Map<String, String>) result.get("data");
 			map.put("userName", userName);
-			result = ResponseResult.success(map);
+			result = new WeakHashMap<String,Object>(){{put("success",true);put("data",map);}};
 		}
 		return result;
 	}

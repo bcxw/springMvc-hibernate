@@ -1,4 +1,4 @@
-package dao;
+package repository;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 import org.springframework.stereotype.Repository;
 
-import dao.repository.EntityRepository;
+import repository.entity.EntityRepository;
 
 @Entity
 @Repository

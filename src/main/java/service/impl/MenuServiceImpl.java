@@ -1,10 +1,11 @@
-package serviceImpl;
+package service.impl;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,13 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import repository.Menu;
 import service.MenuService;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import common.ResponseResult;
-
-import dao.Menu;
 
 @Service
 public class MenuServiceImpl implements MenuService {
@@ -28,8 +27,8 @@ public class MenuServiceImpl implements MenuService {
 	private Menu menu;
 
 	@Override
-	public ResponseResult getMenuTree(Map<String, String> paramMap) {
-		return ResponseResult.success(getMenuTree("a"));
+	public Map<String, Object> getMenuTree(Map<String, String> paramMap) {
+		return new WeakHashMap<String,Object>(){{put("success",true);put("data",getMenuTree(paramMap.get("node")));}};
 	}
 
 	public List<Map<String, Object>> getMenuTree(String parentId) {
@@ -49,7 +48,7 @@ public class MenuServiceImpl implements MenuService {
 
 	@Override
 	@Transactional
-	public ResponseResult saveMenu(Map<String, String> paramMap) {
+	public Map<String, Object> saveMenu(Map<String, String> paramMap) {
 
 		/** 1.同一父菜单，名称不能相同 **/
 		Map<String, Object> checkConditions = new HashMap<String, Object>();
@@ -60,8 +59,7 @@ public class MenuServiceImpl implements MenuService {
 
 		if (checkMenuList != null && !checkMenuList.isEmpty()
 				&& !checkMenuList.get(0).getId().equals(paramMap.get("id"))) {
-			return ResponseResult
-					.failure("The same parent menu has a menu name, please re - enter the name of the menu!");
+			return new WeakHashMap<String,Object>(){{put("success",false);put("message","The same parent menu has a menu name, please re - enter the name of the menu!");}};
 		}
 
 		/** 2.修改时检查不能将菜单的父菜单设置成自己或自己的子菜单 **/
@@ -75,8 +73,7 @@ public class MenuServiceImpl implements MenuService {
 						oneParentMenu.getParentId());
 			}
 			if (parentsIdList.contains(paramMap.get("id"))) {
-				return ResponseResult
-						.failure("You can't set the parent menu to yourself or the sub menu.");
+				return new WeakHashMap<String,Object>(){{put("success",false);put("message","You can't set the parent menu to yourself or the sub menu.");}};
 			}
 		}
 
@@ -111,21 +108,20 @@ public class MenuServiceImpl implements MenuService {
 			menu.save(parentMenu);
 		}
 
-		return ResponseResult.success("Save menu success!", menu);
+		return new WeakHashMap<String,Object>(){{put("success",true);put("message","Save menu success!");}};
 	}
 
 	@Override
 	@Transactional
-	public ResponseResult deleteMenu(Map<String, String> paramMap) {
-		ResponseResult responseResult = null;
+	public Map<String, Object> deleteMenu(Map<String, String> paramMap) {
+		Map<String, Object> responseResult = null;
 
 		String id = paramMap.get("id");
 		menu = menu.findById(Menu.class, id);
 		if (menu != null) {
 			List<Menu> list = menu.findByProperty(Menu.class, "parentId", id);
 			if (list.size() > 0) {
-				responseResult = ResponseResult
-						.failure("This menu contains the sub menu, can not be deleted");
+				responseResult = new WeakHashMap<String,Object>(){{put("success",false);put("message","This menu contains the sub menu, can not be deleted");}};
 			} else {
 				// 如果父菜单没有子菜单了，设置为是末端节点
 				Menu parentMenu = menu.findById(Menu.class, menu.getParentId());
@@ -139,16 +135,16 @@ public class MenuServiceImpl implements MenuService {
 				// 删除菜单
 				menu.remove(menu);
 
-				responseResult = ResponseResult.success("Delete menu success");
+				responseResult = new WeakHashMap<String,Object>(){{put("success",true);put("message","Delete menu success");}};
 			}
 		} else {
-			responseResult = ResponseResult.failure("Menu does not exist");
+			responseResult = new WeakHashMap<String,Object>(){{put("success",false);put("message","Menu does not exist");}};
 		}
 		return responseResult;
 	}
 
 	@Override
-	public ResponseResult getIcons(HttpServletRequest request,
+	public Map<String, Object> getIcons(HttpServletRequest request,
 			Map<String, String> paramMap) {
 		String rootPath = request.getServletContext().getRealPath("/");
 		String imagePath = "images/icon/";
@@ -163,7 +159,7 @@ public class MenuServiceImpl implements MenuService {
 			list.add(map);
 
 		}
-		return ResponseResult.success(list);
+		return new WeakHashMap<String,Object>(){{put("success",true);put("data","list");}};
 	}
 
 }

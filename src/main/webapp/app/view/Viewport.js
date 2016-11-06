@@ -1,8 +1,8 @@
 Ext.define('app.view.Viewport', {
     extend: 'Ext.container.Viewport',
 	
-	requires:["app.view.ViewModel","app.menu.MenuModel","app.view.ViewController","app.main.MainPanel"],
-	viewModel:{type:"menuModel",url:"configAction/getConfig.action"},
+	requires:["app.view.ViewModel","app.view.ViewController","app.main.MainPanel"],
+	viewModel:{type:"viewModel",url:"configAction/getConfig.action"},
 	controller:'viewController',
 	
 	layout: 'border',
@@ -52,12 +52,38 @@ Ext.define('app.view.Viewport', {
         width:200,
 		collapsible:true,
         split:true,
-		rootVisible:false,
 		useArrows:true,
-		bind:{store:'{menuTreeGridStore}'},//以后要修改程自己的store，要有权限的
+		store:{
+			autoLoad:true,
+			type:"tree",
+			sorters:'sort',
+			defaultRootProperty:"data",//按照data属性读取节点，默认是children
+			fields: [{
+				name:'id'
+			},{
+				name:'parentId'
+			},{
+				name:'parentName'
+			},{
+				name:'text'
+			},{
+				name:'uri'
+			},{
+				name:'icon'
+			},{
+				name:'sort'
+			}],
+			proxy: {
+				type:'ajax',
+				url:'menuAction/getMenuTree.action'
+			}
+		},
+		//bind:{store:'{menuTreeStore}'},//以后要修改程自己的store，要有权限的
+		rootVisible:false,
+		root: {expanded: true},
 		listeners:{
 			itemexpand:function( node, eOpts ){
-				if(node.id==0&&node.firstChild)node.firstChild.expand();
+				if(node.id=="root"&&node.firstChild)node.firstChild.expand();
 			},
 			itemclick:function( cmp, record, node, index, e, eOpts ){
 				var uri=record.data.uri;

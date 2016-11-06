@@ -1,4 +1,4 @@
-package dao.repository;
+package repository.entity;
 
 import java.io.Serializable;
 import java.util.List;

@@ -1,4 +1,4 @@
-package action;
+package controller;
 
 import java.util.Map;
 
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import service.MenuService;
-import common.ResponseResult;
 
 @Controller
 @RequestMapping("/menuAction")  
@@ -22,19 +21,19 @@ public class MenuAction {
 	
 	@ResponseBody
 	@RequestMapping("/getMenuTree.action")
-	public ResponseResult getMenuTree(@RequestParam Map<String,String> paramMap){
+	public Map<String, Object> getMenuTree(@RequestParam Map<String,String> paramMap){
 		return menuService.getMenuTree(paramMap);
 	}
 	
 	@ResponseBody
 	@RequestMapping("/deleteMenu.action")
-	public ResponseResult deleteMenu(@RequestParam Map<String,String> paramMap){
+	public Map<String, Object> deleteMenu(@RequestParam Map<String,String> paramMap){
 		return menuService.deleteMenu(paramMap);
 	}
 	
 	@ResponseBody
 	@RequestMapping("/saveMenu.action")
-	public ResponseResult saveMenu(@RequestParam Map<String,String> paramMap){
+	public Map<String, Object> saveMenu(@RequestParam Map<String,String> paramMap){
 		return menuService.saveMenu(paramMap);
 	}
 	
@@ -45,7 +44,7 @@ public class MenuAction {
 	 */
 	@ResponseBody
 	@RequestMapping("/getIcons.action")
-	public ResponseResult getIcons(HttpServletRequest request,@RequestParam Map<String,String> paramMap){
+	public Map<String, Object> getIcons(HttpServletRequest request,@RequestParam Map<String,String> paramMap){
 		return menuService.getIcons(request,paramMap);
 	}
 }

@@ -1,9 +1,9 @@
 package service;
 
-import common.ResponseResult;
+import java.util.Map;
 
 public interface ConfigService {
 
-	public ResponseResult getConfig();
+	public Map<String, Object> getConfig();
 
 }

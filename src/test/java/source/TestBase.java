@@ -11,8 +11,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import dao.Config;
+import repository.Config;
 
+/**
+ * 测试基类，其他测试类均继承此基类
+ * @author houyong
+ *
+ */
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:testApplicationContext.xml" })

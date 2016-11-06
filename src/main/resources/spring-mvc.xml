@@ -11,7 +11,7 @@
 	        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
     
     <!-- 注解 -->
-    <context:component-scan base-package="action"></context:component-scan>
+    <context:component-scan base-package="controller"></context:component-scan>
     
 	<!-- 响应输出json -->
 	<mvc:annotation-driven>  

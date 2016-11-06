@@ -2,14 +2,13 @@
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-String userName=(String)request.getSession().getAttribute("userName");
-if(userName==null||userName.isEmpty())response.sendRedirect("login.jsp");
+
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
     <base href="<%=basePath%>">
-    
+    <meta name="csrf" parameterName="${_csrf.parameterName}" token="${_csrf.token}"/>
     <title></title>
     <link href="favicon.ico" mce_href="favicon.ico" rel="icon" type="image/x-icon" />
     <link href="favicon.ico" mce_href="favicon.ico" rel="bookmark" type="image/x-icon" /> 

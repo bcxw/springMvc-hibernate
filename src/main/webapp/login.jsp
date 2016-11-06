@@ -3,8 +3,6 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
-request.setAttribute("message",request.getSession().getAttribute("message"));
-request.getSession().removeAttribute("message");
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -65,13 +63,17 @@ request.getSession().removeAttribute("message");
 					xtype:"form",
 					standardSubmit:true,
 					bodyPadding:"30 0 0 40",
-					url:"loginAction/login.action",
+					url:"login",
 					bodyStyle:{"background":"none"},
 					items:[{
+						xtype:"hidden",
+						name:"${_csrf.parameterName}",
+						value:"${_csrf.token}"
+					},{
 						xtype:"textfield",
 						labelAlign:"right",
 						fieldLabel:lang("Username"),
-						name:"userName",
+						name:"username",
 						allowBlank:false,
 						labelWidth:60,
 						width:320,
@@ -105,11 +107,11 @@ request.getSession().removeAttribute("message");
 						border:false,
 						padding:"5",
 						bodyStyle:{"background":"none","color":"red","text-align":"center","font-weight":"bold","font-size":"14px"},
-						html:lang("${message}")
+						html:lang("${param.error}${param.logout}${param.failed}${param}${SPRING_SECURITY_LAST_EXCEPTION}${sessionScope}")
 				}],
 				listeners:{
 					show:function(cmp,e){
-						cmp.down("textfield[name='userName']").focus();
+						cmp.down("textfield[name='username']").focus();
 					}	
 				}
 			});
