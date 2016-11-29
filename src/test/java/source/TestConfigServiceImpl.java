@@ -3,9 +3,6 @@
  */
 package source;
 
-import java.util.Map;
-import java.util.WeakHashMap;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -13,11 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import repository.Config;
 import service.ConfigService;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author houyong

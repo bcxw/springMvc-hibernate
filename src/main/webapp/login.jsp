@@ -107,7 +107,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						border:false,
 						padding:"5",
 						bodyStyle:{"background":"none","color":"red","text-align":"center","font-weight":"bold","font-size":"14px"},
-						html:lang("${param.error}${param.logout}${param.failed}${param}${SPRING_SECURITY_LAST_EXCEPTION}${sessionScope}")
+						html:lang("${SPRING_SECURITY_LAST_EXCEPTION}")
 				}],
 				listeners:{
 					show:function(cmp,e){

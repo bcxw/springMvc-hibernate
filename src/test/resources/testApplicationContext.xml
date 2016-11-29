@@ -15,7 +15,7 @@
 	<!-- dataSource -->
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">    
     	<property name="ignoreUnresolvablePlaceholders" value="true" />  
-    	<property name="location" value="classpath:testConfigs.properties" />
+    	<property name="location" value="classpath:configs.properties" />
     	<property name="fileEncoding" value="UTF-8" />
    	</bean>
    	
@@ -38,9 +38,9 @@
 				<prop key="hibernate.show_sql">true</prop>
 			</props>
 		</property>
-		<property name="packagesToScan" value="dao"></property>
+		<property name="packagesToScan" value="repository"></property>
 	</bean>
-	<bean id="entityRepository" class="dao.repository.EntityRepository">
+	<bean id="entityRepository" class="repository.entity.EntityRepository">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
@@ -51,6 +51,7 @@
 	</bean>
 	<tx:annotation-driven transaction-manager="transactionManager" />
 	
-	<context:component-scan base-package="serviceImpl,dao,dao.repository"></context:component-scan>
+	<context:component-scan base-package="service,repository"></context:component-scan>
+	
 
 </beans>

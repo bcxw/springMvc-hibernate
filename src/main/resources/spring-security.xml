@@ -23,11 +23,15 @@
 		
 	</http>
 
+	<beans:bean name="standardPasswordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder"/>
+	
 	<authentication-manager>
 		<authentication-provider>
 			<jdbc-user-service data-source-ref="dataSource"/>
-			<!-- <password-encoder hash="md5"></password-encoder> -->
+			<password-encoder ref="standardPasswordEncoder"></password-encoder>
 		</authentication-provider>
 	</authentication-manager>
+	
+	
 
 </beans:beans>  

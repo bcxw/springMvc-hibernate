@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.Map;
-import java.util.WeakHashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import service.ConfigService;
+
+import common.MapResult;
 
 @Controller
 @RequestMapping("/configAction")
@@ -28,7 +29,7 @@ public class ConfigAction {
 		if (userName != null && !userName.isEmpty()) {
 			Map<String, String> map = (Map<String, String>) result.get("data");
 			map.put("userName", userName);
-			result = new WeakHashMap<String,Object>(){{put("success",true);put("data",map);}};
+			result = MapResult.success(map);
 		}
 		return result;
 	}
