@@ -10,6 +10,7 @@ Ext.define('app.view.Viewport', {
         region: 'north',
         height:80,
 		layout:"hbox",
+		border:false,
 		bodyStyle:{"background":"url(images/main/banner.jpg)","background-size":"100% 100%"},
 		defaults:{
 			border:false,
@@ -80,7 +81,12 @@ Ext.define('app.view.Viewport', {
 		},
 		//bind:{store:'{menuTreeStore}'},//以后要修改程自己的store，要有权限的
 		rootVisible:false,
-		root: {expanded: true},
+		root: {
+			id:"root",
+			text:lang("root menu"),
+			name:lang("root menu"),
+			expanded: true
+		},
 		listeners:{
 			itemexpand:function( node, eOpts ){
 				if(node.id=="root"&&node.firstChild)node.firstChild.expand();

@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"  isELIgnored="false" %>
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -78,8 +78,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						labelWidth:60,
 						width:320,
 						labelStyle:"font-weight:bold",
-						emptyText:lang("Please enter user name"),
-						fieldStyle:"background:url(images/icon/user.png) #fff 3px 3px no-repeat;padding-left:22px;"
+						emptyText:lang("Please enter user name")
 					},{
 						xtype:"textfield",
 						inputType:'password',
@@ -92,7 +91,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						width:320,
 						labelStyle:"font-weight:bold",
 						emptyText:lang("Please enter password"),
-						fieldStyle:"background:url(images/icon/password.png) #fff 3px 3px no-repeat;padding-left:22px;",
 						enableKeyEvents:true,
 						listeners:{
 							keyup:function(cmp,e,obj){

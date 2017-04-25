@@ -6,19 +6,17 @@ import javax.persistence.Table;
 
 import org.springframework.stereotype.Repository;
 
-import repository.entity.EntityRepository;
-
 @Entity
 @Repository
 @Table(name = "config")
-public class Config extends EntityRepository implements java.io.Serializable {
+public class Config extends RepositoryEntity implements java.io.Serializable {
 
 	private static final long serialVersionUID = 6434736325502162891L;
 
-	@Column(name = "param", length = 100)
+	@Column(name = "param")
 	private String param;
 
-	@Column(name = "value", length = 100)
+	@Column(name = "value")
 	private String value;
 
 	public String getParam() {

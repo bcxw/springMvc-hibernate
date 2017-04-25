@@ -6,12 +6,10 @@ import javax.persistence.Table;
 
 import org.springframework.stereotype.Repository;
 
-import repository.entity.EntityRepository;
-
 @Entity
 @Repository
 @Table(name = "users")
-public class Users extends EntityRepository implements java.io.Serializable {
+public class Users extends RepositoryEntity implements java.io.Serializable {
 
 	private static final long serialVersionUID = 999607175131148821L;
 

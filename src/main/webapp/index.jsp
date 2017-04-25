@@ -8,7 +8,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
   <head>
     <base href="<%=basePath%>">
-    <meta name="csrf" parameterName="${_csrf.parameterName}" token="${_csrf.token}"/>
+    <meta name="csrf" parameterName="${_csrf.parameterName}" headerName="${_csrf.headerName}" token="${_csrf.token}"/>
     <title></title>
     <link href="favicon.ico" mce_href="favicon.ico" rel="icon" type="image/x-icon" />
     <link href="favicon.ico" mce_href="favicon.ico" rel="bookmark" type="image/x-icon" /> 

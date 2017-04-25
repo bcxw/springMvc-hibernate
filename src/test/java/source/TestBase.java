@@ -6,14 +6,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import repository.Config;
 
 /**
  * 测试基类，其他测试类均继承此基类
@@ -22,11 +20,8 @@ import repository.Config;
  */
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:testApplicationContext.xml" })
+@ContextConfiguration(locations = { "classpath:spring-context.xml" })
 public class TestBase {
-
-	@Autowired
-	private Config config;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -47,7 +42,14 @@ public class TestBase {
 	@Test
 	public void test() {
 	   PasswordEncoder encoder = new StandardPasswordEncoder();
-	   System.out.println(encoder.encode("123456"));
+	   
+	   Md5PasswordEncoder md5encoder = new Md5PasswordEncoder();
+	   
+	   System.out.println(md5encoder.encodePassword("123456", "admin"));
+	   
+	   
+	   
+	   
 	   System.out.println(encoder.encode("123456"));
 	   System.out.println(encoder.encode("123456"));
 	   

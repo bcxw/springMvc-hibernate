@@ -8,7 +8,7 @@ Ext.define('app.menu.MenuModel',{
 			sorters:'sort',
 			defaultRootProperty:"data",//按照data属性读取节点，默认是children
 			root:{
-				id:0,
+				id:"root",
 				text:lang("root menu"),
 				name:lang("root menu")
 			},

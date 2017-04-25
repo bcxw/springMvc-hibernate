@@ -4,7 +4,7 @@ Ext.define('app.view.ViewController', {
 	logoff:function(){
 		Ext.MessageBox.confirm('系统提示', '您确定要注销登录吗？',function(btn){
 			if(btn=="yes"){
-				var csrf=document.getElementsByName("csrf").item(0);
+				var csrf=Ext.query("meta[name='csrf']")[0];
 				var parameterName=csrf.attributes['parameterName'].value;
 				var token=csrf.attributes['token'].value;
 				Ext.create({

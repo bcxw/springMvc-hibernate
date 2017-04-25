@@ -6,12 +6,10 @@ import javax.persistence.Table;
 
 import org.springframework.stereotype.Repository;
 
-import repository.entity.EntityRepository;
-
 @Entity
 @Repository
 @Table(name = "menu")
-public class Menu extends EntityRepository implements java.io.Serializable {
+public class Menu extends RepositoryEntity implements java.io.Serializable {
 
 	private static final long serialVersionUID = -1469887602916830462L;
 

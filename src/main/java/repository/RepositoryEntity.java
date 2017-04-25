@@ -1,4 +1,4 @@
-package repository.entity;
+package repository;
 
 import java.io.Serializable;
 import java.util.List;
@@ -23,7 +23,7 @@ import org.hibernate.criterion.Restrictions;
  */
 
 @MappedSuperclass
-public class EntityRepository implements java.io.Serializable {
+public class RepositoryEntity implements java.io.Serializable {
 
 	private static final long serialVersionUID = -4045790452749373259L;
 
@@ -50,7 +50,7 @@ public class EntityRepository implements java.io.Serializable {
 	private static SessionFactory sessionFactory;
 
 	public void setSessionFactory(SessionFactory sessionFactory) {
-		EntityRepository.sessionFactory = sessionFactory;
+		RepositoryEntity.sessionFactory = sessionFactory;
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class EntityRepository implements java.io.Serializable {
 	 * @return 实体对象
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends EntityRepository> T findById(final Class<T> clazz,
+	public <T extends RepositoryEntity> T findById(final Class<T> clazz,
 			final Serializable id) {
 		return (T) session().get(clazz, id);
 	}
@@ -91,7 +91,7 @@ public class EntityRepository implements java.io.Serializable {
 	 * @return 实体对象数组
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends EntityRepository> List<T> findByProperties(
+	public <T extends RepositoryEntity> List<T> findByProperties(
 			Class<T> clazz, Map<String, Object> properties) {
 		Criteria criteria = session().createCriteria(clazz);
 		for (String key : properties.keySet()) {
@@ -112,7 +112,7 @@ public class EntityRepository implements java.io.Serializable {
 	 * @return 实体对象数组
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends EntityRepository> List<T> findByProperty(Class<T> clazz,
+	public <T extends RepositoryEntity> List<T> findByProperty(Class<T> clazz,
 			String propertyName, Object propertyValue) {
 		return session().createCriteria(clazz)
 				.add(Restrictions.eq(propertyName, propertyValue)).list();
@@ -125,7 +125,7 @@ public class EntityRepository implements java.io.Serializable {
 	 *            实体对象
 	 * @return 实体对象
 	 */
-	public <T extends EntityRepository> T save(T entity) {
+	public <T extends RepositoryEntity> T save(T entity) {
 		session().saveOrUpdate(entity);
 		return entity;
 	}
@@ -136,7 +136,7 @@ public class EntityRepository implements java.io.Serializable {
 	 * @param entity
 	 *            实体对象
 	 */
-	public void remove(EntityRepository entity) {
+	public void remove(RepositoryEntity entity) {
 		session().delete(entity);
 	}
 

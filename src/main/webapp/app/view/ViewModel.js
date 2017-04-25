@@ -5,6 +5,7 @@ Ext.define('app.view.ViewModel', {
 	extend : 'Ext.app.ViewModel',
 	alias : 'viewmodel.viewModel',
 	
+	data:{systemName:"",userName:""},
 	constructor: function(config){
 		this.callParent(arguments);
 		if(this.url){

@@ -5,6 +5,9 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,10 +28,10 @@ public class ConfigAction {
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> getConfig(HttpSession httpSession) {
 		Map<String, Object> result = configService.getConfig();
-		String userName = (String) httpSession.getAttribute("userName");
-		if (userName != null && !userName.isEmpty()) {
+		Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+		if (authentication.isAuthenticated()) {
 			Map<String, String> map = (Map<String, String>) result.get("data");
-			map.put("userName", userName);
+			map.put("userName", authentication.getName());
 			result = MapResult.success(map);
 		}
 		return result;
