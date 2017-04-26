@@ -5,14 +5,16 @@ Ext.application({
 		Ext.QuickTips.init();
 
 		/** 默认给所有请求加csrf **/
+		var csrf=Ext.query("meta[name='csrf']")[0];
+		window.csrf_headerName=csrf.attributes['headerName'].value;
+		window.csrf_parameterName=csrf.attributes['parameterName'].value;
+		window.csrf_token=csrf.attributes['token'].value;
+		
 		Ext.override(Ext.data.Connection,{
 			createRequest: function(options, requestOptions) {
 				/** 添加csrf **/
-				var csrf=Ext.query("meta[name='csrf']")[0];
-				var headerName=csrf.attributes['headerName'].value;
-				var token=csrf.attributes['token'].value;
 				options.headers=options.headers?options.headers:{};
-				options.headers[headerName]=token;
+				options.headers[csrf_headerName]=csrf_token;
 				
 				/** ext 6.0 **/
 				var me = this,
