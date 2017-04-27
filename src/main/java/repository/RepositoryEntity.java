@@ -33,7 +33,7 @@ public class RepositoryEntity implements java.io.Serializable {
 	@Id
 	@GenericGenerator(name = "generator", strategy = "uuid")
 	@GeneratedValue(generator = "generator")
-	@Column(name = "id", unique = true, nullable = false)
+	@Column(name = "id")
 	private String id;
 
 	public String getId() {

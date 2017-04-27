@@ -10,7 +10,7 @@ Ext.define('app.menu.MenuController', {
 			parentNode.expand(false,function(){
 				var sortNumber=parentNode.lastChild&&parentNode.lastChild.data.sort?(parseInt(parentNode.lastChild.data.sort)+10):10;
 				sortNumber=parseInt(sortNumber/10)*10;
-				var newNode=parentNode.appendChild({noSave:true,parentId:parentNode.data.parentId,sort:sortNumber,leaf:true});
+				var newNode=parentNode.appendChild({saved:false,parentId:parentNode.data.parentId,sort:sortNumber,leaf:true});
 				parentNode.expand();
 				
 				rowEditing.startEdit(newNode);
@@ -123,13 +123,14 @@ Ext.define('app.menu.MenuController', {
 		//保存菜单
 		Ext.Ajax.request({
 			url:'menuAction/saveMenu.action',
-			params:context.record.data,
+			params:Ext.apply(context.record.data,{id:(context.record.data.saved==false?"":context.record.data.id)}),
 			success:function(response){
 				var result=Ext.decode(response.responseText);
 				if(result.success){
 					//设置状态为已保存
 					context.record.set("id",result.data.id);
-					context.record.set("noSave",false);
+					//保存状态，如果saved==false就是新添加的数据，没有进到数据库的。否则就是在数据库中的。
+					context.record.set("saved",true);
 					context.record.commit();
 					
 					//如果修改了父菜单就将此菜单移位
@@ -167,7 +168,7 @@ Ext.define('app.menu.MenuController', {
 		});
 	},
 	canceledit:function( editor, context, eOpts ){
-		if(context.record.data.noSave){
+		if(context.record.data.saved==false){
 			context.record.remove();
 		}
 	},

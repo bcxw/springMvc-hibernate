@@ -41,13 +41,14 @@ public class TestBase {
 
 	@Test
 	public void test() {
+		
+		System.out.println("402881e85bad6d4c015bad6e94fe0001".length());
+		
 	   PasswordEncoder encoder = new StandardPasswordEncoder();
 	   
 	   Md5PasswordEncoder md5encoder = new Md5PasswordEncoder();
 	   
 	   System.out.println(md5encoder.encodePassword("123456", "admin"));
-	   
-	   
 	   
 	   
 	   System.out.println(encoder.encode("123456"));
