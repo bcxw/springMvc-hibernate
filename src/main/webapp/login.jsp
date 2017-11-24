@@ -17,7 +17,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<script language="javascript" type="text/javascript" src="Ext/build/ext-all.js"></script>
     <script language="javascript" type="text/javascript" src="Ext/build/classic/locale/locale-zh_CN.js"></script>
-    <script language="javascript" type="text/javascript" src="locale/zh_CN.js"></script>
 	
   </head>
   
@@ -38,7 +37,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				border:false,
 				defaults:{border:false},
 				buttons:[{
-					text:lang("Login"),
+					text:'登录',
 					name:"submitButton",
 					listeners:{
 						click:function(button){
@@ -78,25 +77,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					},{
 						xtype:"textfield",
 						labelAlign:"right",
-						fieldLabel:lang("用户名"),
+						fieldLabel:"用户名",
 						name:"username",
 						allowBlank:false,
 						labelWidth:60,
 						width:320,
 						labelStyle:"font-weight:bold",
-						emptyText:lang("Please enter user name")
+						emptyText:'请输入用户名'
 					},{
 						xtype:"textfield",
 						inputType:'password',
 						style:"margin-top:15px",
 						labelAlign:"right",
-						fieldLabel:lang("密码"),
+						fieldLabel:"密码",
 						name:"password",
 						allowBlank:false,
 						labelWidth:60,
 						width:320,
 						labelStyle:"font-weight:bold",
-						emptyText:lang("Please enter password"),
+						emptyText:'请输入密码',
 						enableKeyEvents:true,
 						listeners:{
 							keyup:function(cmp,e,obj){
@@ -111,7 +110,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						border:false,
 						padding:"5",
 						bodyStyle:{"background":"none","color":"red","text-align":"center","font-weight":"bold","font-size":"14px"},
-						html:lang("${SPRING_SECURITY_LAST_EXCEPTION}")
+						html:"${SPRING_SECURITY_LAST_EXCEPTION}"
 				}],
 				listeners:{
 					show:function(cmp,e){

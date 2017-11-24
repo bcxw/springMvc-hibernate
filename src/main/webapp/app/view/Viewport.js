@@ -43,12 +43,12 @@ Ext.define('app.view.Viewport', {
 				style:{"background":"#FFF"}
 			},
 			items:[{
-				tooltip:lang("Current user"),
-				icon:"images/icon/user.png",
+				tooltip:'当前用户',
+				glyph:0xf007,
 				bind: {text:"{userName}"},
 			},{
-				tooltip:lang("Log off"),
-				icon:"images/icon/off.png",
+				tooltip:'注销登录',
+				glyph:0xf011,
 				handler:"logoff"
 			}]
 		}]
@@ -59,8 +59,8 @@ Ext.define('app.view.Viewport', {
     },{
         region: 'west',
 		xtype:"treepanel",
-		title:lang("Menu navigation"),
-		icon:"images/icon/menu_white.png",
+		title:'菜单导航',
+		glyph:0xf0ca,
         width:200,
 		collapsible:true,
         split:true,
@@ -94,8 +94,8 @@ Ext.define('app.view.Viewport', {
 		rootVisible:false,
 		root: {
 			id:"root",
-			text:lang("root menu"),
-			name:lang("root menu"),
+			text:'顶级菜单',
+			name:'顶级菜单',
 			expanded: true
 		},
 		listeners:{

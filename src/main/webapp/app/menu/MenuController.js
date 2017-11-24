@@ -2,6 +2,9 @@ Ext.define('app.menu.MenuController', {
 	extend: 'Ext.app.ViewController',
 	alias : 'controller.menuController',
 	insertMenu:function(button){
+		var editorWin=Ext.create('app.menu.MenuEditorWindow', {title:'新增菜单',width:this.getView().getWidth(),height:this.getView().getHeight(),x:this.getView().getX(),y:this.getView().getY()});
+		/*return false;
+		
 		var tree=button.up("treepanel");
 		var rowEditing=tree.getPlugin("menuTreeGridRowediting");
 		
@@ -22,7 +25,7 @@ Ext.define('app.menu.MenuController', {
 				buttons: Ext.MessageBox.OK,
 				icon: Ext.MessageBox.WARNING
 			});
-		}
+		}*/
 		
 	},
 	updateMenu:function(button){

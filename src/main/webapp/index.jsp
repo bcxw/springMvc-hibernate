@@ -15,10 +15,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link href="favicon.ico" mce_href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
     
 	<link rel="stylesheet" type="text/css" href="Ext/build/classic/theme-neptune/resources/theme-neptune-all.css">
+	<link rel="stylesheet" type="text/css" href="Ext/build/packages/font-awesome/resources/css/font-awesome.min.css">
     
 	<script language="javascript" type="text/javascript" src="Ext/build/ext-all.js"></script>
 	<script language="javascript" type="text/javascript" src="Ext/build/classic/locale/locale-zh_CN.js"></script>
-	<script language="javascript" type="text/javascript" src="locale/zh_CN.js"></script>
 	<script language="javascript" type="text/javascript" src="App.js"></script>
   </head>
   

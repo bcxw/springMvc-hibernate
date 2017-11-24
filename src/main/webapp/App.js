@@ -1,9 +1,10 @@
 Ext.application({
 	name : 'app',
 	autoCreateViewport: true,
+	init: function(){
+		Ext.setGlyphFontFamily('FontAwesome');
+	},
 	launch:function(){
-		Ext.QuickTips.init();
-
 		/** 默认给所有请求加csrf **/
 		var csrf=Ext.query("meta[name='csrf']")[0];
 		window.csrf_headerName=csrf.attributes['headerName'].value;

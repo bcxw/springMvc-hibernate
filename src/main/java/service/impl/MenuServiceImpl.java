@@ -17,7 +17,7 @@ import service.MenuService;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import common.MapResult;
+import common.ResultUtil;
 import repository.Menu;
 
 @Service
@@ -28,7 +28,7 @@ public class MenuServiceImpl implements MenuService {
 
   @Override
   public Map<String, Object> getMenuTree(Map<String, String> paramMap) {
-    return MapResult.success(getMenuTree(paramMap.get("node")));
+    return ResultUtil.success(getMenuTree(paramMap.get("node")));
   }
 
   public List<Map<String, Object>> getMenuTree(String parentId) {
@@ -56,7 +56,7 @@ public class MenuServiceImpl implements MenuService {
 
     if (checkMenuList != null && !checkMenuList.isEmpty()
         && !checkMenuList.get(0).getId().equals(paramMap.get("id"))) {
-      return MapResult.failure("同一父菜单下以存在此名称，请重新输入菜单名称");
+      return ResultUtil.failure("同一父菜单下以存在此名称，请重新输入菜单名称");
     }
 
     /** 2.修改时检查不能将菜单的父菜单设置成自己或自己的子菜单 **/
@@ -68,7 +68,7 @@ public class MenuServiceImpl implements MenuService {
         oneParentMenu = menu.findById(Menu.class, oneParentMenu.getParentId());
       }
       if (parentsIdList.contains(paramMap.get("id"))) {
-        return MapResult.failure("不能把自己或者子菜单设置成自己的父菜单");
+        return ResultUtil.failure("不能把自己或者子菜单设置成自己的父菜单");
       }
     }
 
@@ -98,7 +98,7 @@ public class MenuServiceImpl implements MenuService {
       parentMenu.setLeaf("false");
       menu.save(parentMenu);
     }
-    return MapResult.success(menu, "保存菜单成功");
+    return ResultUtil.success(menu, "保存菜单成功");
   }
 
   @Override
@@ -111,7 +111,7 @@ public class MenuServiceImpl implements MenuService {
     if (menu != null) {
       List<Menu> list = menu.findByProperty(Menu.class, "parentId", id);
       if (list.size() > 0) {
-        responseResult = MapResult.failure("此菜单包含子菜单，不能删除");
+        responseResult = ResultUtil.failure("此菜单包含子菜单，不能删除");
       } else {
         // 如果父菜单没有子菜单了，设置为是末端节点
         Menu parentMenu = menu.findById(Menu.class, menu.getParentId());
@@ -124,30 +124,12 @@ public class MenuServiceImpl implements MenuService {
         // 删除菜单
         menu.remove(menu);
 
-        responseResult = MapResult.success("删除菜单成功");
+        responseResult = ResultUtil.success("删除菜单成功");
       }
     } else {
-      responseResult = MapResult.failure("菜单不存在");
+      responseResult = ResultUtil.failure("菜单不存在");
     }
     return responseResult;
-  }
-
-  @Override
-  public Map<String, Object> getIcons(HttpServletRequest request, Map<String, String> paramMap) {
-    String rootPath = request.getServletContext().getRealPath("/");
-    String imagePath = "images/icon/";
-    File file = new File(rootPath + imagePath);
-    File[] files = file.listFiles();
-    List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-    for (File imgeFile : files) {
-      Map<String, String> map = new HashMap<String, String>();
-      String fileName = imgeFile.getName();
-      map.put("url", imagePath + fileName);
-      map.put("name", fileName);
-      list.add(map);
-
-    }
-    return MapResult.success(list);
   }
 
 }

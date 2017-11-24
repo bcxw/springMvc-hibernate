@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import service.ConfigService;
 
-import common.MapResult;
+import common.ResultUtil;
 import repository.Config;
 
 @Service
@@ -23,7 +23,7 @@ public class ConfigServiceImpl implements ConfigService {
     config = configs == null || configs.isEmpty() ? config : configs.get(0);
     Map<String, Object> map = new HashMap<String, Object>();
     map.put("systemName", config != null ? config.getValue() : "");
-    return MapResult.success(map);
+    return ResultUtil.success(map);
   }
 
 }

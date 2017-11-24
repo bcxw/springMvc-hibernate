@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import common.MapResult;
+import common.ResultUtil;
 import service.ConfigService;
 
 @Controller
@@ -30,7 +30,7 @@ public class ConfigAction {
 		if (authentication.isAuthenticated()) {
 			Map<String, String> map = (Map<String, String>) result.get("data");
 			map.put("userName", authentication.getName());
-			result = MapResult.success(map);
+			result = ResultUtil.success(map);
 		}
 		return result;
 	}

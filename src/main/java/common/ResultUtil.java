@@ -3,7 +3,7 @@ package common;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapResult {
+public class ResultUtil {
 	private static final String SUCCESS = "success";
 	private static final String MESSAGE = "message";
 	private static final String DATA = "data";

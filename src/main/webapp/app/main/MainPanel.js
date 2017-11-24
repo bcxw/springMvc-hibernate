@@ -4,6 +4,6 @@ Ext.define('app.main.MainPanel',{
 	closable:false,
 	title:"我的主页",
 	uri:"app.main.MainPanel",
-	icon:"images/icon/main.png",
+	glyph:0xf19c,
 	html:"我的主页"
 });

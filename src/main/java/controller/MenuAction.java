@@ -37,14 +37,4 @@ public class MenuAction {
 		return menuService.saveMenu(paramMap);
 	}
 	
-	/**
-	 * 获取菜单所有小图标，作为下拉选项
-	 * @param paramMap
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping("/getIcons.action")
-	public Map<String, Object> getIcons(HttpServletRequest request,@RequestParam Map<String,String> paramMap){
-		return menuService.getIcons(request,paramMap);
-	}
 }
