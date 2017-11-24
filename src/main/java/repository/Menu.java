@@ -16,9 +16,6 @@ public class Menu extends RepositoryEntity implements java.io.Serializable {
 	@Column(name = "parentId")
 	private String parentId;
 
-	@Column(name = "parentName")
-	private String parentName;
-
 	@Column(name = "text")
 	private String text;
 
@@ -40,14 +37,6 @@ public class Menu extends RepositoryEntity implements java.io.Serializable {
 
 	public void setParentId(String parentId) {
 		this.parentId = parentId;
-	}
-
-	public String getParentName() {
-		return this.parentName;
-	}
-
-	public void setParentName(String parentName) {
-		this.parentName = parentName;
 	}
 
 	public String getText() {

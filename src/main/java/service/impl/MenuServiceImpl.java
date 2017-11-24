@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -57,13 +56,7 @@ public class MenuServiceImpl implements MenuService {
 
     if (checkMenuList != null && !checkMenuList.isEmpty()
         && !checkMenuList.get(0).getId().equals(paramMap.get("id"))) {
-      return new WeakHashMap<String, Object>() {
-        {
-          put("success", false);
-          put("message",
-              "The same parent menu has a menu name, please re - enter the name of the menu!");
-        }
-      };
+      return MapResult.failure("同一父菜单下以存在此名称，请重新输入菜单名称");
     }
 
     /** 2.修改时检查不能将菜单的父菜单设置成自己或自己的子菜单 **/
@@ -75,12 +68,7 @@ public class MenuServiceImpl implements MenuService {
         oneParentMenu = menu.findById(Menu.class, oneParentMenu.getParentId());
       }
       if (parentsIdList.contains(paramMap.get("id"))) {
-        return new WeakHashMap<String, Object>() {
-          {
-            put("success", false);
-            put("message", "You can't set the parent menu to yourself or the sub menu.");
-          }
-        };
+        return MapResult.failure("不能把自己或者子菜单设置成自己的父菜单");
       }
     }
 
@@ -90,7 +78,6 @@ public class MenuServiceImpl implements MenuService {
 
     menu.setText(paramMap.get("text"));
     menu.setParentId(paramMap.get("parentId"));
-    menu.setParentName(paramMap.get("parentName"));
     menu.setUri(paramMap.get("uri"));
     menu.setIcon(paramMap.get("icon"));
     if (StringUtils.isNotEmpty(paramMap.get("sort")) && StringUtils.isNumeric(paramMap.get("sort")))
@@ -111,13 +98,7 @@ public class MenuServiceImpl implements MenuService {
       parentMenu.setLeaf("false");
       menu.save(parentMenu);
     }
-
-    return new WeakHashMap<String, Object>() {
-      {
-        put("success", true);
-        put("message", "Save menu success!");
-      }
-    };
+    return MapResult.success(menu, "保存菜单成功");
   }
 
   @Override
@@ -130,12 +111,7 @@ public class MenuServiceImpl implements MenuService {
     if (menu != null) {
       List<Menu> list = menu.findByProperty(Menu.class, "parentId", id);
       if (list.size() > 0) {
-        responseResult = new WeakHashMap<String, Object>() {
-          {
-            put("success", false);
-            put("message", "This menu contains the sub menu, can not be deleted");
-          }
-        };
+        responseResult = MapResult.failure("此菜单包含子菜单，不能删除");
       } else {
         // 如果父菜单没有子菜单了，设置为是末端节点
         Menu parentMenu = menu.findById(Menu.class, menu.getParentId());
@@ -148,20 +124,10 @@ public class MenuServiceImpl implements MenuService {
         // 删除菜单
         menu.remove(menu);
 
-        responseResult = new WeakHashMap<String, Object>() {
-          {
-            put("success", true);
-            put("message", "Delete menu success");
-          }
-        };
+        responseResult = MapResult.success("删除菜单成功");
       }
     } else {
-      responseResult = new WeakHashMap<String, Object>() {
-        {
-          put("success", false);
-          put("message", "Menu does not exist");
-        }
-      };
+      responseResult = MapResult.failure("菜单不存在");
     }
     return responseResult;
   }
@@ -181,12 +147,7 @@ public class MenuServiceImpl implements MenuService {
       list.add(map);
 
     }
-    return new WeakHashMap<String, Object>() {
-      {
-        put("success", true);
-        put("data", "list");
-      }
-    };
+    return MapResult.success(list);
   }
 
 }

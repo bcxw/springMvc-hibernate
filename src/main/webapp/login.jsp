@@ -13,10 +13,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <link href="favicon.ico" mce_href="favicon.ico" rel="bookmark" type="image/x-icon" /> 
 	<link href="favicon.ico" mce_href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
     
-	<link rel="stylesheet" type="text/css" href="extjs/build/classic/theme-neptune/resources/theme-neptune-all.css">
+	<link rel="stylesheet" type="text/css" href="Ext/build/classic/theme-neptune/resources/theme-neptune-all.css">
 	
-	<script language="javascript" type="text/javascript" src="extjs/build/ext-all.js"></script>
-    <script language="javascript" type="text/javascript" src="extjs/build/classic/locale/locale-zh_CN.js"></script>
+	<script language="javascript" type="text/javascript" src="Ext/build/ext-all.js"></script>
+    <script language="javascript" type="text/javascript" src="Ext/build/classic/locale/locale-zh_CN.js"></script>
     <script language="javascript" type="text/javascript" src="locale/zh_CN.js"></script>
 	
   </head>
@@ -26,9 +26,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  	Ext.onReady(function(){
 			Ext.create('Ext.window.Window',{
 				viewModel:Ext.create("app.view.ViewModel",{url:"configAction/getConfig.action"}),
-				bind: {title:"{systemName}"},
-				width:470,
-				height:280,
+				header:{hidden:true},
+				width:450,
+				height:250,
 				modal:true,
 				titleAlign:"center",
 				closable:false,
@@ -57,7 +57,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					items:[{
 						xtype:"image",
 						src:'images/main/logo.png',
-						height:60	
+						height:50,
+						margin:5,
+						style:"display:block;float:left"
+					},{
+						xtype:"label",
+						bind: {text:"{systemName}登录"},
+						style:"font-size:20px;line-height: 50px;display:block;float:left;height:50px;margin:5px;font-weight:bold;color:#fff;"
 					}]
 				},{
 					xtype:"form",
@@ -72,7 +78,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					},{
 						xtype:"textfield",
 						labelAlign:"right",
-						fieldLabel:lang("Username"),
+						fieldLabel:lang("用户名"),
 						name:"username",
 						allowBlank:false,
 						labelWidth:60,
@@ -84,7 +90,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						inputType:'password',
 						style:"margin-top:15px",
 						labelAlign:"right",
-						fieldLabel:lang("Password"),
+						fieldLabel:lang("密码"),
 						name:"password",
 						allowBlank:false,
 						labelWidth:60,

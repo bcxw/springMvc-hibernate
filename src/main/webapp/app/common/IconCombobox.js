@@ -21,6 +21,7 @@ Ext.define('app.common.IconCombobox', {
 			floating: true,
 			shadow: false,
 			maxHeight:300,
+			minHeight:150,
 			scrollable:"y",
 			items:[{
 				xtype:"dataview",

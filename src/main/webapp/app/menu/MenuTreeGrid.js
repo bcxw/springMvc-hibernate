@@ -2,7 +2,7 @@ Ext.define('app.menu.MenuTreeGrid',{
 	extend: 'Ext.tree.Panel',
 	alias: ['widget.menuTreeGrid'],
 	
-	requires:["app.menu.MenuModel","app.menu.MenuController",'app.common.MenuCombobox','app.common.IconCombobox'],
+	requires:["app.menu.MenuModel","app.menu.MenuController",'app.common.IconCombobox','app.common.MenuCombobox'],
 	viewModel:"menuModel",
 	controller:'menuController',
 	bind:{store:'{menuTreeGridStore}'},
@@ -11,6 +11,7 @@ Ext.define('app.menu.MenuTreeGrid',{
 	rootVisible:false,
 	columnLines:true,
 	allowDeselect:true,
+	
 	plugins:[{
 		ptype:"rowediting",
 		saveBtnText: '保存',
@@ -21,6 +22,9 @@ Ext.define('app.menu.MenuTreeGrid',{
 			canceledit:"canceledit",
 			beforeedit:"beforeedit",
 		}
+	},{
+		
+		ptype:'treeviewdragdrop'
 	}],
 	tbar:[{
 		text:"新增",

@@ -4,21 +4,21 @@ Ext.define('app.menu.MenuController', {
 	insertMenu:function(button){
 		var tree=button.up("treepanel");
 		var rowEditing=tree.getPlugin("menuTreeGridRowediting");
+		
 		if(!rowEditing.editing){
 			var parentNode=tree.getSelection();
 			parentNode=parentNode&&parentNode.length>0?parentNode[0]:tree.store.root;
 			parentNode.expand(false,function(){
 				var sortNumber=parentNode.lastChild&&parentNode.lastChild.data.sort?(parseInt(parentNode.lastChild.data.sort)+10):10;
 				sortNumber=parseInt(sortNumber/10)*10;
-				var newNode=parentNode.appendChild({saved:false,parentId:parentNode.data.parentId,sort:sortNumber,leaf:true});
-				parentNode.expand();
-				
+				var newNode=parentNode.appendChild({parentId:parentNode.data.id,parentName:parentNode.data.text,saved:false,sort:sortNumber,leaf:true});
+				parentNode.expand();//没有子节点的新增会展不开的问题
 				rowEditing.startEdit(newNode);
 			});
 		}else{
 			Ext.MessageBox.show({
-				title:lang('System prompt'),
-				msg: lang('Please complete the current edit!'),
+				title:lang('系统提示'),
+				msg: lang('请先完成当前编辑的数据'),
 				buttons: Ext.MessageBox.OK,
 				icon: Ext.MessageBox.WARNING
 			});
@@ -98,8 +98,8 @@ Ext.define('app.menu.MenuController', {
 		//检查parentId不能是自己
 		if(context.record.data.id==context.record.data.parentId){
 			Ext.MessageBox.show({
-				title:lang('System prompt'),
-				msg:lang("Parent menu can not set their own"),
+				title:lang('系统提示'),
+				msg:lang("不能把自己设置成自己的父菜单"),
 				buttons: Ext.MessageBox.OK,
 				icon: Ext.MessageBox.WARNING
 			});
@@ -108,7 +108,7 @@ Ext.define('app.menu.MenuController', {
 		}
 		
 		
-		//将父菜单名称放入菜单数据中
+		//将父菜单放入菜单数据中
 		var parentColumn;
 		Ext.Array.each(context.grid.columns,function(column, index, countriesItSelf){
 			if(column.dataIndex=="parentId"){
@@ -119,6 +119,8 @@ Ext.define('app.menu.MenuController', {
 		var menuParentEditor=editor.getEditingContext( context.record, parentColumn );
 		var parentComboboxRecord=menuParentEditor.value==0?menuParentEditor.store.root:menuParentEditor.store.findRecord("id",menuParentEditor.value);
 		context.record.set("parentName",parentComboboxRecord.data.text);
+		context.record.set("parentId",parentComboboxRecord.data.id);
+		
 		
 		//保存菜单
 		Ext.Ajax.request({
@@ -127,11 +129,17 @@ Ext.define('app.menu.MenuController', {
 			success:function(response){
 				var result=Ext.decode(response.responseText);
 				if(result.success){
-					//设置状态为已保存
-					context.record.set("id",result.data.id);
-					//保存状态，如果saved==false就是新添加的数据，没有进到数据库的。否则就是在数据库中的。
-					context.record.set("saved",true);
-					context.record.commit();
+					
+					//替换成保存后的节点，直接setid不好用
+					var parentNode=context.record.parentNode;
+					var newNodeData=context.record.data;
+					context.record.remove();
+					var newNode=parentNode.appendChild(Ext.apply(newNodeData,{id:result.data.id,saved:true}));
+					newNode.commit();
+					
+					context.grid.selModel.select(parentNode);
+					
+					
 					
 					//如果修改了父菜单就将此菜单移位
 					if(context.record.parentNode.id!=context.record.parentId){
@@ -144,6 +152,8 @@ Ext.define('app.menu.MenuController', {
 						}
 						
 					}
+					
+
 					
 					Ext.toast({html:result.message,align:'b',stickOnClick:false});
 				}else{
@@ -175,8 +185,8 @@ Ext.define('app.menu.MenuController', {
 	beforeedit:function( editor, context, eOpts ){
 		if(editor.editing){
 			Ext.MessageBox.show({
-				title:lang('System prompt'),
-				msg:lang('Please complete the current edit!'),
+				title:lang('系统提示'),
+				msg:lang('请先完成当前正在编辑的数据'),
 				buttons: Ext.MessageBox.OK,
 				icon: Ext.MessageBox.WARNING
 			});

@@ -35,7 +35,7 @@
 		</property>
 		<property name="packagesToScan" value="repository"></property>
 	</bean>
-	<bean id="entityRepository" class="repository.RepositoryEntity">
+	<bean id="repositoryEntity" class="repository.RepositoryEntity">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	

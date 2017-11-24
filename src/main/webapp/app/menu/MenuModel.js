@@ -9,8 +9,8 @@ Ext.define('app.menu.MenuModel',{
 			defaultRootProperty:"data",//按照data属性读取节点，默认是children
 			root:{
 				id:"root",
-				text:lang("root menu"),
-				name:lang("root menu")
+				text:lang("顶级菜单"),
+				name:lang("顶级菜单")
 			},
 			fields: [{
 				name:'id'

@@ -19,8 +19,19 @@ Ext.define('app.view.Viewport', {
 			style:{"background":"none"}
 		},
 		items: [{
-			xtype:"image",
-			src:'images/main/logo.png'
+			minWidth:500,
+			items:[{
+				xtype:"image",
+				src:'images/main/logo.png',
+				height:60,
+				weight:60,
+				margin:8,
+				style:"display:block;float:left"
+			},{
+				xtype:"label",
+				bind: {text:"{systemName}"},
+				style:"margin-left: 75px;font-size:25px;line-height: 70px;display:block;float:left;height:50px;margin:5px;font-weight:bold;color:#fff;"
+			}]
 		},{
 			xtype:'tbspacer',
 			flex:1
